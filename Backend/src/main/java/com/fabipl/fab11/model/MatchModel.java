@@ -1,10 +1,13 @@
 package com.fabipl.fab11.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -16,9 +19,10 @@ public class MatchModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String season;
+    private Integer season;
     private String city;
-    private String date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate date;
     private String playerOfMatch;
     private String venue;
     private String team1;
@@ -27,8 +31,6 @@ public class MatchModel {
     private String tossDecision;
     private String winner;
     private String result;
-    private String resultMargin;
-    private String targetRuns;
-
-
+    private Integer resultMargin;
+    private Integer targetRuns;
 }
