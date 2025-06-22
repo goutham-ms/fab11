@@ -2,11 +2,9 @@ package com.fabipl.fab11.controller;
 
 import com.fabipl.fab11.model.MatchModel;
 import com.fabipl.fab11.service.MatchService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,6 +53,21 @@ public class MatchController {
     @GetMapping("/public/match/target/{target}")
     public List<MatchModel> getMatchByTarget(@PathVariable Integer target) {
         return matchService.getMatchByTargetRuns(target);
+    }
+
+    @PostMapping("/public/match")
+    public String addMatch(@RequestBody MatchModel match) {
+        return matchService.addMatch(match);
+    }
+
+    @PutMapping("/public/match/{id}")
+    public String updateMatch(@PathVariable Integer id, @RequestBody MatchModel match) {
+        return matchService.updateMatch(id, match);
+    }
+
+    @DeleteMapping("/public/match/{id}")
+    public String deleteMatch(@PathVariable Integer id) {
+        return matchService.deleteMatch(id);
     }
 
 }

@@ -15,7 +15,8 @@ public interface MatchService {
    List<MatchModel> getMatchByWinner(String winner);
    List<MatchModel> getMatchByTargetRuns(Integer targetRuns);
 
-   List<MatchModel> updateMatch(Integer id);
-   List<String> deleteMatch(Integer id);
+   String addMatch(MatchModel match);
+   String updateMatch(Integer id, MatchModel match);
+   String deleteMatch(Integer id);
 
 }
