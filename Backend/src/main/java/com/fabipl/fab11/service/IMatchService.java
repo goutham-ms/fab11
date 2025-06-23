@@ -5,6 +5,7 @@ import com.fabipl.fab11.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -54,16 +55,15 @@ public class IMatchService implements MatchService {
 
     @Override
     public String addMatch(MatchModel match) {
-        Optional<MatchModel> existingMatch = matchRepository.findByTeam1AndTeam2(match.getTeam1(), match.getTeam2())
-                .stream().filter(c -> c.getDate().equals(match.getDate()) || c.getVenue().equals(match.getVenue()) || c.getCity().equals(match.getCity()))
-                .findAny();
-        if(existingMatch.isPresent()) {
+
+        Optional<MatchModel> optionalMatch = matchRepository.findDuplicateMatch(match.getDate(), match.getVenue(), match.getCity());
+
+        if(optionalMatch.isPresent()) {
             return "Match already exits";
         } else {
             matchRepository.save(match);
             return "Match saved";
         }
-
     }
 
     @Override
@@ -96,8 +96,10 @@ public class IMatchService implements MatchService {
 
     @Override
     public String deleteMatch(Integer id) {
+
         Optional<MatchModel> optionalMatch = matchRepository.findById(id).stream()
                 .findAny();
+
         if(optionalMatch.isPresent()) {
             MatchModel match = optionalMatch.get();
             matchRepository.delete(match);
@@ -106,4 +108,7 @@ public class IMatchService implements MatchService {
             return "Match not found";
         }
     }
+
+
+
 }

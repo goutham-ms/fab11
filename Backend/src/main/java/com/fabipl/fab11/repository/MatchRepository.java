@@ -2,9 +2,13 @@ package com.fabipl.fab11.repository;
 
 import com.fabipl.fab11.model.MatchModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MatchRepository extends JpaRepository<MatchModel, Integer> {
@@ -21,4 +25,7 @@ public interface MatchRepository extends JpaRepository<MatchModel, Integer> {
     List<MatchModel> findByWinner(String winner);
 
     List<MatchModel> findByTargetRuns(Integer targetRuns);
+
+    @Query("SELECT m FROM MatchModel m WHERE m.date = :date AND m.venue = :venue AND m.city = :city")
+    Optional<MatchModel> findDuplicateMatch(@Param("date")LocalDate date, @Param("venue") String venue, @Param("city") String city);
 }

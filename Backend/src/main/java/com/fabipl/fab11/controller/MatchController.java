@@ -2,11 +2,12 @@ package com.fabipl.fab11.controller;
 
 import com.fabipl.fab11.model.MatchModel;
 import com.fabipl.fab11.service.MatchService;
-import jakarta.persistence.criteria.CriteriaBuilder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api")
@@ -69,5 +70,6 @@ public class MatchController {
     public String deleteMatch(@PathVariable Integer id) {
         return matchService.deleteMatch(id);
     }
+
 
 }
