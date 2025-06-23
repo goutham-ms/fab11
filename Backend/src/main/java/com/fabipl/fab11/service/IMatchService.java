@@ -44,7 +44,7 @@ public class IMatchService implements MatchService {
 
     @Override
     public List<MatchModel> getMatchByTeam(String team) {
-        List<MatchModel> matches = matchRepository.findByTeam1(team);
+        List<MatchModel> matches = matchRepository.findByTeam(team);
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
         }
@@ -62,7 +62,7 @@ public class IMatchService implements MatchService {
 
     @Override
     public List<MatchModel> getMatchByVenue(String venue) {
-        List<MatchModel> matches = matchRepository.findByVenue(venue);
+        List<MatchModel> matches = matchRepository.findByVenueContainingIgnoreCase(venue);
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
         }
@@ -71,7 +71,7 @@ public class IMatchService implements MatchService {
 
     @Override
     public List<MatchModel> getMatchByWinner(String winner) {
-        List<MatchModel> matches = matchRepository.findByWinner(winner);
+        List<MatchModel> matches = matchRepository.findByWinnerContainingIgnoreCase(winner);
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
         }
@@ -80,7 +80,7 @@ public class IMatchService implements MatchService {
 
     @Override
     public List<MatchModel> getMatchByTargetRuns(Integer targetRuns) {
-        List<MatchModel> matches = matchRepository.findByTargetRuns(targetRuns);
+        List<MatchModel> matches = matchRepository.findByTargetRunsGreaterThan(targetRuns);
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
         }

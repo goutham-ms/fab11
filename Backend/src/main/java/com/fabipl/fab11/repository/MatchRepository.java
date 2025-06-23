@@ -14,17 +14,21 @@ import java.util.Optional;
 public interface MatchRepository extends JpaRepository<MatchModel, Integer> {
     List<MatchModel> findBySeason(Integer season);
 
-    List<MatchModel> findByPlayerOfMatch(String playerOfMatch);
+    @Query("SELECT m FROM MatchModel m WHERE m.playerOfMatch LIKE %:player%")
+    List<MatchModel> findByPlayerOfMatch(@Param("player") String playerOfMatch);
 
-    List<MatchModel> findByTeam1(String team);
+    @Query("SELECT m FROM MatchModel m WHERE m.team1 LIKE %:team% OR m.team2 LIKE %:team%")
+    List<MatchModel> findByTeam(@Param("team") String team);
 
-    List<MatchModel> findByTeam1AndTeam2(String team1, String team2);
+    @Query("SELECT m FROM MatchModel m WHERE (m.team1 LIKE %:teamA% AND m.team2 LIKE %:teamB%)"
+    + "OR (m.team1 LIKE %:teamB% AND m.team2 LIKE %:teamA%)")
+    List<MatchModel> findByTeam1AndTeam2(@Param("teamA") String team1, @Param("teamB") String team2);
 
-    List<MatchModel> findByVenue(String venue);
+    List<MatchModel> findByVenueContainingIgnoreCase(String venue);
 
-    List<MatchModel> findByWinner(String winner);
+    List<MatchModel> findByWinnerContainingIgnoreCase(String winner);
 
-    List<MatchModel> findByTargetRuns(Integer targetRuns);
+    List<MatchModel> findByTargetRunsGreaterThan(Integer targetRuns);
 
     @Query("SELECT m FROM MatchModel m WHERE m.date = :date OR m.venue = :venue OR m.city = :city")
     Optional<MatchModel> findDuplicateMatch(@Param("date")LocalDate date, @Param("venue") String venue, @Param("city") String city);
