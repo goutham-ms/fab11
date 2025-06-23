@@ -20,43 +20,75 @@ public class MatchController {
     private MatchService matchService;
 
     @GetMapping("/public/match")
-    public ResponseEntity<List<MatchModel>> getAllMatch() {
-        return new ResponseEntity<>(matchService.getAllMatches(), HttpStatus.OK);
+    public ResponseEntity<?> getAllMatch() {
+        try {
+            return new ResponseEntity<>(matchService.getAllMatches(), HttpStatus.OK);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(e.getBody(), e.getStatusCode());
+        }
     }
 
     @GetMapping("/public/match/season/{season}")
-    public ResponseEntity<List<MatchModel>> getMatchBySeason(@PathVariable Integer season) {
-        return new  ResponseEntity(matchService.getMatchBySeason(season), HttpStatus.OK);
+    public ResponseEntity<?> getMatchBySeason(@PathVariable Integer season) {
+        try {
+            return new ResponseEntity(matchService.getMatchBySeason(season), HttpStatus.OK);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(e.getBody(), e.getStatusCode());
+        }
     }
 
     @GetMapping("/public/match/player/{player}")
-    public ResponseEntity<List<MatchModel>> getMatchByPlayerOfMatch(@PathVariable String player) {
-        return new ResponseEntity<>(matchService.getMatchByPlayerOfMatch(player), HttpStatus.OK);
+    public ResponseEntity<?> getMatchByPlayerOfMatch(@PathVariable String player) {
+        try {
+            return new ResponseEntity<>(matchService.getMatchByPlayerOfMatch(player), HttpStatus.OK);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(e.getBody(), e.getStatusCode());
+        }
     }
 
     @GetMapping("/public/match/team/{team}")
-    public ResponseEntity<List<MatchModel>> getMatchByTeam(@PathVariable String team) {
-        return new ResponseEntity<>(matchService.getMatchByTeam(team), HttpStatus.OK);
+    public ResponseEntity<?> getMatchByTeam(@PathVariable String team) {
+        try {
+            return new ResponseEntity<>(matchService.getMatchByTeam(team), HttpStatus.OK);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(e.getBody(), e.getStatusCode());
+        }
     }
 
     @GetMapping("/public/match/teams/{team1}/{team2}")
-    public ResponseEntity<List<MatchModel>> getMatchByTeams(@PathVariable String team1, @PathVariable String team2) {
-        return new ResponseEntity<>(matchService.getMatchByTeam1AndTeam2(team1, team2), HttpStatus.OK);
+    public ResponseEntity<?> getMatchByTeams(@PathVariable String team1, @PathVariable String team2) {
+        try {
+            return new ResponseEntity<>(matchService.getMatchByTeam1AndTeam2(team1, team2), HttpStatus.OK);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(e.getBody(), e.getStatusCode());
+        }
     }
 
     @GetMapping("/public/match/venue/{venue}")
-    public ResponseEntity<List<MatchModel>> getMatchByVenue(@PathVariable String venue) {
-        return new ResponseEntity<>(matchService.getMatchByVenue(venue), HttpStatus.OK);
+    public ResponseEntity<?> getMatchByVenue(@PathVariable String venue) {
+        try {
+            return new ResponseEntity<>(matchService.getMatchByVenue(venue), HttpStatus.OK);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(e.getBody(), e.getStatusCode());
+        }
     }
 
     @GetMapping("/public/match/winner/{winner}")
-    public ResponseEntity<List<MatchModel>> getMatchByWinner(@PathVariable String winner) {
-        return new ResponseEntity<>(matchService.getMatchByWinner(winner), HttpStatus.OK);
+    public ResponseEntity<?> getMatchByWinner(@PathVariable String winner) {
+        try {
+            return new ResponseEntity<>(matchService.getMatchByWinner(winner), HttpStatus.OK);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(e.getBody(), e.getStatusCode());
+        }
     }
 
     @GetMapping("/public/match/target/{target}")
-    public ResponseEntity<List<MatchModel>> getMatchByTarget(@PathVariable Integer target) {
-        return new ResponseEntity<>( matchService.getMatchByTargetRuns(target), HttpStatus.OK);
+    public ResponseEntity<?> getMatchByTarget(@PathVariable Integer target) {
+        try {
+            return new ResponseEntity<>( matchService.getMatchByTargetRuns(target), HttpStatus.OK);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(e.getBody(), e.getStatusCode());
+        }
     }
 
     @PostMapping("/public/match")
