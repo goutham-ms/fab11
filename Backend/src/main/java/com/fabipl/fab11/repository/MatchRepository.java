@@ -26,6 +26,6 @@ public interface MatchRepository extends JpaRepository<MatchModel, Integer> {
 
     List<MatchModel> findByTargetRuns(Integer targetRuns);
 
-    @Query("SELECT m FROM MatchModel m WHERE m.date = :date AND m.venue = :venue AND m.city = :city")
+    @Query("SELECT m FROM MatchModel m WHERE m.date = :date OR m.venue = :venue OR m.city = :city")
     Optional<MatchModel> findDuplicateMatch(@Param("date")LocalDate date, @Param("venue") String venue, @Param("city") String city);
 }

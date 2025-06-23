@@ -3,7 +3,9 @@ package com.fabipl.fab11.service;
 import com.fabipl.fab11.model.MatchModel;
 import com.fabipl.fab11.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.List;
@@ -16,41 +18,73 @@ public class IMatchService implements MatchService {
 
     @Override
     public List<MatchModel> getAllMatches() {
-        return matchRepository.findAll();
+        List<MatchModel> matches = matchRepository.findAll();
+        if(matches.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        }
+        return matches;
     }
     @Override
     public List<MatchModel> getMatchBySeason(Integer season) {
-        return matchRepository.findBySeason(season);
+        List<MatchModel> matches = matchRepository.findBySeason(season);
+        if(matches.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        }
+        return matches;
     }
 
     @Override
     public List<MatchModel> getMatchByPlayerOfMatch(String playerOfMatch) {
-        return matchRepository.findByPlayerOfMatch(playerOfMatch);
+        List<MatchModel> matches = matchRepository.findByPlayerOfMatch(playerOfMatch);
+        if(matches.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        }
+        return matches;
     }
 
     @Override
     public List<MatchModel> getMatchByTeam(String team) {
-        return matchRepository.findByTeam1(team);
+        List<MatchModel> matches = matchRepository.findByTeam1(team);
+        if(matches.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        }
+        return matches;
     }
 
     @Override
     public List<MatchModel> getMatchByTeam1AndTeam2(String team1, String team2) {
-        return matchRepository.findByTeam1AndTeam2(team1, team2);
+        List<MatchModel> matches = matchRepository.findByTeam1AndTeam2(team1, team2);
+        if(matches.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        }
+        return matches;
     }
 
     @Override
     public List<MatchModel> getMatchByVenue(String venue) {
-        return matchRepository.findByVenue(venue);
+        List<MatchModel> matches = matchRepository.findByVenue(venue);
+        if(matches.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        }
+        return matches;
     }
 
     @Override
     public List<MatchModel> getMatchByWinner(String winner) {
-        return matchRepository.findByWinner(winner);
+        List<MatchModel> matches = matchRepository.findByWinner(winner);
+        if(matches.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        }
+        return matches;
     }
 
     @Override
     public List<MatchModel> getMatchByTargetRuns(Integer targetRuns) {
-      return matchRepository.findByTargetRuns(targetRuns);
+        List<MatchModel> matches = matchRepository.findByTargetRuns(targetRuns);
+        if(matches.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        }
+        return matches;
     }
 
     @Override
@@ -59,7 +93,7 @@ public class IMatchService implements MatchService {
         Optional<MatchModel> optionalMatch = matchRepository.findDuplicateMatch(match.getDate(), match.getVenue(), match.getCity());
 
         if(optionalMatch.isPresent()) {
-            return "Match already exits";
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Match already exits");
         } else {
             matchRepository.save(match);
             return "Match saved";
@@ -68,45 +102,36 @@ public class IMatchService implements MatchService {
 
     @Override
     public String updateMatch(Integer id, MatchModel match) {
-        Optional<MatchModel> optionalMatch = matchRepository.findById(id)
-                .stream().findAny();
-        if(optionalMatch.isPresent()) {
-            MatchModel existingMatch = optionalMatch.get();
-            existingMatch.setId(match.getId());
-            existingMatch.setSeason(match.getSeason());
-            existingMatch.setCity(match.getCity());
-            existingMatch.setDate(match.getDate());
-            existingMatch.setPlayerOfMatch(match.getPlayerOfMatch());
-            existingMatch.setVenue(match.getVenue());
-            existingMatch.setTeam1(match.getTeam1());
-            existingMatch.setTeam2(match.getTeam2());
-            existingMatch.setTossWinner(match.getTossWinner());
-            existingMatch.setTossDecision(match.getTossDecision());
-            existingMatch.setWinner(match.getWinner());
-            existingMatch.setResult(match.getResult());
-            existingMatch.setResultMargin(match.getResultMargin());
-            existingMatch.setTargetRuns(match.getTargetRuns());
-            matchRepository.save(existingMatch);
-            return "Match updated successfully";
-        } else {
-            return "Match not found";
-        }
+        MatchModel existingMatch = matchRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!"));
+
+        existingMatch.setId(id);
+        existingMatch.setSeason(match.getSeason());
+        existingMatch.setCity(match.getCity());
+        existingMatch.setDate(match.getDate());
+        existingMatch.setPlayerOfMatch(match.getPlayerOfMatch());
+        existingMatch.setVenue(match.getVenue());
+        existingMatch.setTeam1(match.getTeam1());
+        existingMatch.setTeam2(match.getTeam2());
+        existingMatch.setTossWinner(match.getTossWinner());
+        existingMatch.setTossDecision(match.getTossDecision());
+        existingMatch.setWinner(match.getWinner());
+        existingMatch.setResult(match.getResult());
+        existingMatch.setResultMargin(match.getResultMargin());
+        existingMatch.setTargetRuns(match.getTargetRuns());
+        matchRepository.save(existingMatch);
+        return "Match updated successfully";
     }
 
 
     @Override
     public String deleteMatch(Integer id) {
 
-        Optional<MatchModel> optionalMatch = matchRepository.findById(id).stream()
-                .findAny();
+        MatchModel existingMatch = matchRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!"));
 
-        if(optionalMatch.isPresent()) {
-            MatchModel match = optionalMatch.get();
-            matchRepository.delete(match);
-            return "Match Deleted";
-        } else {
-            return "Match not found";
-        }
+        matchRepository.delete(existingMatch);
+        return "Match deleted successfully";
     }
 
 
