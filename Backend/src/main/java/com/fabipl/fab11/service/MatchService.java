@@ -1,21 +1,20 @@
 package com.fabipl.fab11.service;
 
+import com.fabipl.fab11.dto.MatchResponse;
 import com.fabipl.fab11.model.MatchModel;
 
 
-import java.util.List;
-
 
 public interface MatchService {
-   List<MatchModel> getAllMatches();
+   MatchResponse getAllMatches(int pageNo, int pageSize);
 
-   List<MatchModel> getMatchBySeason(Integer season);
-   List<MatchModel> getMatchByPlayerOfMatch(String playerOfMatch);
-   List<MatchModel> getMatchByTeam(String team);
-   List<MatchModel> getMatchByTeam1AndTeam2(String team1, String team2);
-   List<MatchModel> getMatchByVenue(String venue);
-   List<MatchModel> getMatchByWinner(String winner);
-   List<MatchModel> getMatchByTargetRuns(Integer targetRuns);
+   MatchResponse getMatchBySeason(Integer season, int pageNo, int pageSize);
+   MatchResponse getMatchByPlayerOfMatch(String playerOfMatch, int pageNo, int pageSize);
+   MatchResponse getMatchByTeam(String team, int pageNo, int pageSize);
+   MatchResponse getMatchByTeam1AndTeam2(String team1, String team2, int pageNo, int pageSize);
+   MatchResponse getMatchByVenue(String venue, int pageNo, int pageSize);
+   MatchResponse getMatchByWinner(String winner, int pageNo, int pageSize);
+   MatchResponse getMatchByTargetRuns(Integer targetRuns, int pageNo, int pageSize);
 
    String addMatch(MatchModel match);
    String updateMatch(Integer id, MatchModel match);

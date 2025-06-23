@@ -1,11 +1,16 @@
 package com.fabipl.fab11.service;
 
+import com.fabipl.fab11.dto.MatchResponse;
 import com.fabipl.fab11.model.MatchModel;
 import com.fabipl.fab11.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 
 
 import java.util.List;
@@ -17,74 +22,161 @@ public class IMatchService implements MatchService {
     private MatchRepository matchRepository;
 
     @Override
-    public List<MatchModel> getAllMatches() {
-        List<MatchModel> matches = matchRepository.findAll();
+    public MatchResponse getAllMatches(int pageNo, int pageSize) {
+        Pageable pageable =  PageRequest.of(pageNo , pageSize);
+        Page<MatchModel> pagedMatches = matchRepository.findAll(pageable);
+        List<MatchModel> matches = pagedMatches.getContent();
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        } else {
+            MatchResponse matchResponse = new MatchResponse();
+            matchResponse.setContent(matches);
+            matchResponse.setPageNo(pagedMatches.getNumber());
+            matchResponse.setPageSize(pagedMatches.getSize());
+            matchResponse.setTotalItems(pagedMatches.getTotalElements());
+            matchResponse.setTotalPages(pagedMatches.getTotalPages());
+            matchResponse.setLast(pagedMatches.isLast());
+            return matchResponse;
         }
-        return matches;
     }
     @Override
-    public List<MatchModel> getMatchBySeason(Integer season) {
-        List<MatchModel> matches = matchRepository.findBySeason(season);
+    public MatchResponse getMatchBySeason(Integer season, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<MatchModel> pagedMatches = matchRepository.findBySeason(season, pageable);
+        List<MatchModel> matches = pagedMatches.getContent();
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        } else {
+            MatchResponse matchResponse = new MatchResponse();
+            matchResponse.setContent(matches);
+            matchResponse.setPageNo(pagedMatches.getNumber());
+            matchResponse.setPageSize(pagedMatches.getSize());
+            matchResponse.setTotalItems(pagedMatches.getTotalElements());
+            matchResponse.setTotalPages(pagedMatches.getTotalPages());
+            matchResponse.setLast(pagedMatches.isLast());
+          return matchResponse;
         }
-        return matches;
     }
 
     @Override
-    public List<MatchModel> getMatchByPlayerOfMatch(String playerOfMatch) {
-        List<MatchModel> matches = matchRepository.findByPlayerOfMatch(playerOfMatch);
+    public MatchResponse getMatchByPlayerOfMatch(String playerOfMatch, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<MatchModel> pagedMatches = matchRepository.findByPlayerOfMatch(playerOfMatch, pageable);
+        List<MatchModel> matches = pagedMatches.getContent();
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        } else  {
+            MatchResponse matchResponse = new MatchResponse();
+            matchResponse.setContent(matches);
+            matchResponse.setPageNo(pagedMatches.getNumber());
+            matchResponse.setPageSize(pagedMatches.getSize());
+            matchResponse.setTotalItems(pagedMatches.getTotalElements());
+            matchResponse.setTotalPages(pagedMatches.getTotalPages());
+            matchResponse.setLast(pagedMatches.isLast());
+            return matchResponse;
         }
-        return matches;
     }
 
     @Override
-    public List<MatchModel> getMatchByTeam(String team) {
-        List<MatchModel> matches = matchRepository.findByTeam(team);
+    public MatchResponse getMatchByTeam(String team, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<MatchModel> pagedMatches = matchRepository.findByTeam(team, pageable);
+        List<MatchModel> matches = pagedMatches.getContent();
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        } else {
+            MatchResponse matchResponse = new MatchResponse();
+            matchResponse.setContent(matches);
+            matchResponse.setPageNo(pagedMatches.getNumber());
+            matchResponse.setPageSize(pagedMatches.getSize());
+            matchResponse.setTotalItems(pagedMatches.getTotalElements());
+            matchResponse.setTotalPages(pagedMatches.getTotalPages());
+            matchResponse.setLast(pagedMatches.isLast());
+            return matchResponse;
         }
-        return matches;
     }
 
     @Override
-    public List<MatchModel> getMatchByTeam1AndTeam2(String team1, String team2) {
-        List<MatchModel> matches = matchRepository.findByTeam1AndTeam2(team1, team2);
+    public MatchResponse getMatchByTeam1AndTeam2(String team1, String team2, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<MatchModel> pagedMatches = matchRepository.findByTeam1AndTeam2(team1, team2, pageable);
+        List<MatchModel> matches = pagedMatches.getContent();
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        } else {
+            MatchResponse matchResponse = new MatchResponse();
+            matchResponse.setContent(matches);
+            matchResponse.setPageNo(pagedMatches.getNumber());
+            matchResponse.setPageSize(pagedMatches.getSize());
+            matchResponse.setTotalItems(pagedMatches.getTotalElements());
+            matchResponse.setTotalPages(pagedMatches.getTotalPages());
+            matchResponse.setLast(pagedMatches.isLast());
+            return matchResponse;
         }
-        return matches;
     }
 
     @Override
-    public List<MatchModel> getMatchByVenue(String venue) {
-        List<MatchModel> matches = matchRepository.findByVenueContainingIgnoreCase(venue);
+    public MatchResponse getMatchByVenue(String venue, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<MatchModel> pagedMatches = matchRepository.findByVenueContainingIgnoreCase(venue, pageable);
+        List<MatchModel> matches = pagedMatches.getContent();
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        } else {
+            MatchResponse matchResponse = new MatchResponse();
+            matchResponse.setContent(matches);
+            matchResponse.setPageNo(pagedMatches.getNumber());
+            matchResponse.setPageSize(pagedMatches.getSize());
+            matchResponse.setTotalItems(pagedMatches.getTotalElements());
+            matchResponse.setTotalPages(pagedMatches.getTotalPages());
+            matchResponse.setLast(pagedMatches.isLast());
+            return matchResponse;
         }
-        return matches;
     }
 
     @Override
-    public List<MatchModel> getMatchByWinner(String winner) {
-        List<MatchModel> matches = matchRepository.findByWinnerContainingIgnoreCase(winner);
+    public MatchResponse getMatchByWinner(String winner, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<MatchModel> pagedMatches = matchRepository.findByWinnerContainingIgnoreCase(winner, pageable);
+        List<MatchModel> matches = pagedMatches.getContent();
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        } else {
+            MatchResponse matchResponse = new MatchResponse();
+            matchResponse.setContent(matches);
+            matchResponse.setPageNo(pagedMatches.getNumber());
+            matchResponse.setPageSize(pagedMatches.getSize());
+            matchResponse.setTotalItems(pagedMatches.getTotalElements());
+            matchResponse.setTotalPages(pagedMatches.getTotalPages());
+            matchResponse.setLast(pagedMatches.isLast());
+            return matchResponse;
         }
-        return matches;
     }
 
     @Override
-    public List<MatchModel> getMatchByTargetRuns(Integer targetRuns) {
-        List<MatchModel> matches = matchRepository.findByTargetRunsGreaterThan(targetRuns);
+    public MatchResponse getMatchByTargetRuns(Integer targetRuns, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<MatchModel> pagedMatches = matchRepository.findByTargetRunsGreaterThan(targetRuns, pageable);
+        List<MatchModel> matches = pagedMatches.getContent();
         if(matches.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found!");
+        } else {
+            MatchResponse matchResponse = new MatchResponse();
+            matchResponse.setContent(matches);
+            matchResponse.setPageNo(pagedMatches.getNumber());
+            matchResponse.setPageSize(pagedMatches.getSize());
+            matchResponse.setTotalItems(pagedMatches.getTotalElements());
+            matchResponse.setTotalPages(pagedMatches.getTotalPages());
+            matchResponse.setLast(pagedMatches.isLast());
+            return matchResponse;
         }
-        return matches;
     }
 
     @Override

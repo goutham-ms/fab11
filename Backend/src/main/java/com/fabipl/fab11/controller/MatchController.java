@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/api")
@@ -20,72 +18,104 @@ public class MatchController {
     private MatchService matchService;
 
     @GetMapping("/public/match")
-    public ResponseEntity<?> getAllMatch() {
+    public ResponseEntity<?> getAllMatch(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false)int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false)int pageSize
+    ) {
         try {
-            return new ResponseEntity<>(matchService.getAllMatches(), HttpStatus.OK);
+            return new ResponseEntity<>(matchService.getAllMatches(pageNo, pageSize), HttpStatus.OK);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(e.getBody(), e.getStatusCode());
         }
     }
 
-    @GetMapping("/public/match/season/{season}")
-    public ResponseEntity<?> getMatchBySeason(@PathVariable Integer season) {
+    @GetMapping("/public/match/season")
+    public ResponseEntity<?> getMatchBySeason(
+            @RequestParam(value = "season", defaultValue = "2008", required = true) Integer season,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false)int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false)int pageSize
+    ) {
         try {
-            return new ResponseEntity(matchService.getMatchBySeason(season), HttpStatus.OK);
+            return new ResponseEntity<>(matchService.getMatchBySeason(season, pageNo, pageSize), HttpStatus.OK);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(e.getBody(), e.getStatusCode());
         }
     }
 
     @GetMapping("/public/match/player/{player}")
-    public ResponseEntity<?> getMatchByPlayerOfMatch(@PathVariable String player) {
+    public ResponseEntity<?> getMatchByPlayerOfMatch(
+            @PathVariable String player,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false)int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false)int pageSize
+            ) {
         try {
-            return new ResponseEntity<>(matchService.getMatchByPlayerOfMatch(player), HttpStatus.OK);
+            return new ResponseEntity<>(matchService.getMatchByPlayerOfMatch(player, pageNo, pageSize), HttpStatus.OK);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(e.getBody(), e.getStatusCode());
         }
     }
 
     @GetMapping("/public/match/team/{team}")
-    public ResponseEntity<?> getMatchByTeam(@PathVariable String team) {
+    public ResponseEntity<?> getMatchByTeam(
+            @PathVariable String team,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false)int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false)int pageSize
+            ) {
         try {
-            return new ResponseEntity<>(matchService.getMatchByTeam(team), HttpStatus.OK);
+            return new ResponseEntity<>(matchService.getMatchByTeam(team, pageNo, pageSize), HttpStatus.OK);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(e.getBody(), e.getStatusCode());
         }
     }
 
     @GetMapping("/public/match/teams/{team1}/{team2}")
-    public ResponseEntity<?> getMatchByTeams(@PathVariable String team1, @PathVariable String team2) {
+    public ResponseEntity<?> getMatchByTeams(
+            @PathVariable String team1,
+            @PathVariable String team2,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false)int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false)int pageSize
+    ) {
         try {
-            return new ResponseEntity<>(matchService.getMatchByTeam1AndTeam2(team1, team2), HttpStatus.OK);
+            return new ResponseEntity<>(matchService.getMatchByTeam1AndTeam2(team1, team2, pageNo, pageSize), HttpStatus.OK);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(e.getBody(), e.getStatusCode());
         }
     }
 
     @GetMapping("/public/match/venue/{venue}")
-    public ResponseEntity<?> getMatchByVenue(@PathVariable String venue) {
+    public ResponseEntity<?> getMatchByVenue(
+            @PathVariable String venue,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false)int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false)int pageSize
+    ) {
         try {
-            return new ResponseEntity<>(matchService.getMatchByVenue(venue), HttpStatus.OK);
+            return new ResponseEntity<>(matchService.getMatchByVenue(venue, pageNo, pageSize), HttpStatus.OK);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(e.getBody(), e.getStatusCode());
         }
     }
 
     @GetMapping("/public/match/winner/{winner}")
-    public ResponseEntity<?> getMatchByWinner(@PathVariable String winner) {
+    public ResponseEntity<?> getMatchByWinner(
+            @PathVariable String winner,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false)int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false)int pageSize
+    ) {
         try {
-            return new ResponseEntity<>(matchService.getMatchByWinner(winner), HttpStatus.OK);
+            return new ResponseEntity<>(matchService.getMatchByWinner(winner, pageNo, pageSize), HttpStatus.OK);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(e.getBody(), e.getStatusCode());
         }
     }
 
-    @GetMapping("/public/match/target/{target}")
-    public ResponseEntity<?> getMatchByTarget(@PathVariable Integer target) {
+    @GetMapping("/public/match/target")
+    public ResponseEntity<?> getMatchByTarget(
+            @RequestParam(value = "target", defaultValue = "200", required = true) Integer target,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false)int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false)int pageSize
+    ) {
         try {
-            return new ResponseEntity<>( matchService.getMatchByTargetRuns(target), HttpStatus.OK);
+            return new ResponseEntity<>( matchService.getMatchByTargetRuns(target, pageNo, pageSize), HttpStatus.OK);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(e.getBody(), e.getStatusCode());
         }
