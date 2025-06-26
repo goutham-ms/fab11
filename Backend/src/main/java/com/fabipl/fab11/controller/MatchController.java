@@ -1,8 +1,6 @@
 package com.fabipl.fab11.controller;
-
 import com.fabipl.fab11.model.MatchModel;
 import com.fabipl.fab11.service.MatchService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -121,7 +119,7 @@ public class MatchController {
         }
     }
 
-    @PostMapping("/public/match")
+    @PostMapping("/admin/match")
     public ResponseEntity<String> addMatch(@RequestBody MatchModel match) {
         try {
             return new ResponseEntity<>(matchService.addMatch(match), HttpStatus.CREATED);
@@ -130,7 +128,7 @@ public class MatchController {
         }
     }
 
-    @PutMapping("/public/match/{id}")
+    @PutMapping("/admin/match/{id}")
     public ResponseEntity<String> updateMatch(@PathVariable Integer id, @RequestBody MatchModel match) {
         try {
             return new ResponseEntity<>(matchService.updateMatch(id, match), HttpStatus.OK);
@@ -139,7 +137,7 @@ public class MatchController {
         }
     }
 
-    @DeleteMapping("/public/match/{id}")
+    @DeleteMapping("/admin/match/{id}")
     public ResponseEntity<String> deleteMatch(@PathVariable Integer id) {
         try {
             return new ResponseEntity<>(matchService.deleteMatch(id), HttpStatus.OK);
